@@ -1,0 +1,33 @@
+import { useRef, useEffect } from "react";
+import { ChatMessage } from "./ChatMessage";
+import "./ChatMessages.css"
+
+function useAutoScroll(chatMessages) {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const containerElem = containerRef.current;
+    if (containerElem) {
+      containerElem.scrollTop = containerElem.scrollHeight;
+    }
+  }, [chatMessages]);
+  return containerRef;
+}
+function ChatMessages({ chatMessages }) {
+  const chatMessagesRef = useAutoScroll(chatMessages);
+
+  return (
+    <div ref={chatMessagesRef} className="chat-messages-container">
+      {chatMessages.map((chatMessage) => (
+        <ChatMessage
+          message={chatMessage.message}
+          sender={chatMessage.sender}
+          time ={chatMessage.time}
+          key={chatMessage.id}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default ChatMessages;
